@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/fananchong/gochart"
+	"github.com/golang/glog"
 	"github.com/zieckey/goini"
 	"strings"
 )
@@ -12,15 +13,25 @@ type PieChart struct {
 }
 
 func (c *PieChart) Update() {
-
+	file := "./res/" + c.filename
+	ini := goini.New()
+	err := ini.ParseFile(file)
+	if err != nil {
+		glog.Errorln(err)
+		return
+	}
+	err = c.Parse(ini, file)
+	if err != nil {
+		glog.Errorln(err)
+		return
+	}
 }
 
-func (c *PieChart) Parse(ini *goini.INI, file string) (map[string]string, error) {
-	args := make(map[string]string)
-	args["ChartType"], _ = ini.Get("ChartType")
-	args["Title"], _ = ini.Get("Title")
-	args["SubTitle"], _ = ini.Get("SubTitle")
-	args["SeriesName"], _ = ini.Get("SeriesName")
+func (c *PieChart) Parse(ini *goini.INI, file string) error {
+	c.ChartType, _ = ini.Get("ChartType")
+	c.Title, _ = ini.Get("Title")
+	c.SubTitle, _ = ini.Get("SubTitle")
+	c.SeriesName, _ = ini.Get("SeriesName")
 
 	/* Generate DataArray:
 	   [
@@ -36,7 +47,7 @@ func (c *PieChart) Parse(ini *goini.INI, file string) (map[string]string, error)
 	DataArray := "[\n"
 	mapkeys, kvmap, err := LoadConfGetOrderMap(file)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	for _, k := range mapkeys {
 		if !strings.HasPrefix(k, DataPrefix) {
@@ -49,6 +60,6 @@ func (c *PieChart) Parse(ini *goini.INI, file string) (map[string]string, error)
 
 	DataArray = DataArray + "]"
 
-	args["DataArray"] = DataArray
-	return args, nil
+	c.DataArray = DataArray
+	return nil
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/bitly/go-simplejson"
 	"github.com/fananchong/gochart"
+	"github.com/golang/glog"
 	"github.com/zieckey/goini"
 )
 
@@ -15,24 +16,34 @@ type SplineChart struct {
 }
 
 func (c *SplineChart) Update() {
-
+	file := "./res/" + c.filename
+	ini := goini.New()
+	err := ini.ParseFile(file)
+	if err != nil {
+		glog.Errorln(err)
+		return
+	}
+	err = c.Parse(ini, file)
+	if err != nil {
+		glog.Errorln(err)
+		return
+	}
 }
 
-func (c *SplineChart) Parse(ini *goini.INI, file string) (map[string]string, error) {
-	args := make(map[string]string)
-	args["ChartType"], _ = ini.Get("ChartType")
-	args["Title"], _ = ini.Get("Title")
-	args["SubTitle"], _ = ini.Get("SubTitle")
-	args["YAxisText"], _ = ini.Get("YAxisText")
-	args["XAxisNumbers"], _ = ini.Get("XAxisNumbers")
-	args["ValueSuffix"], _ = ini.Get("ValueSuffix")
-	args["Height"], _ = ini.Get("Height")
+func (c *SplineChart) Parse(ini *goini.INI, file string) error {
+	c.ChartType, _ = ini.Get("ChartType")
+	c.Title, _ = ini.Get("Title")
+	c.SubTitle, _ = ini.Get("SubTitle")
+	c.YAxisText, _ = ini.Get("YAxisText")
+	c.XAxisNumbers, _ = ini.Get("XAxisNumbers")
+	c.ValueSuffix, _ = ini.Get("ValueSuffix")
+	c.Height, _ = ini.Get("Height")
 
 	datas := make([]interface{}, 0)
 
 	mapkeys, kvmap, err := LoadConfGetOrderMap(file)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	for _, key := range mapkeys {
@@ -58,7 +69,6 @@ func (c *SplineChart) Parse(ini *goini.INI, file string) (map[string]string, err
 	json := simplejson.New()
 	json.Set("DataArray", datas)
 	b, _ := json.Get("DataArray").Encode()
-	args["DataArray"] = string(b)
-	//log.Println(args)
-	return args, nil
+	c.DataArray = string(b)
+	return nil
 }

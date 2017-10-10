@@ -19,5 +19,6 @@ func main() {
 	s.AddChart("line", &SplineChart{filename: "line.chart"})
 	s.AddChart("pie", &PieChart{filename: "pie.chart"})
 	s.AddChart("spline", &SplineChart{filename: "spline.chart"})
+
 	println(s.ListenAndServe(":8000").Error())
 }
