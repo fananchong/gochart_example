@@ -31,6 +31,9 @@ func (c *SplineChart) Update() {
 }
 
 func (c *SplineChart) Parse(ini *goini.INI, file string) error {
+
+	c.RefreshTime = "1"
+
 	c.ChartType, _ = ini.Get("ChartType")
 	c.Title, _ = ini.Get("Title")
 	c.SubTitle, _ = ini.Get("SubTitle")
