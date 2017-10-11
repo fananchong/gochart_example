@@ -12,6 +12,7 @@ type TimeChartExample struct {
 
 var (
 	playernum []int = []int{1, 5, 3, 6, 8, 0, 10, 11, 6, 10, 11}
+	roomnum   []int = []int{11, 7, 6, 3, 9, 2, 4, 1, 9, 3, 2}
 )
 
 func (this *TimeChartExample) Update() {
@@ -23,14 +24,25 @@ func (this *TimeChartExample) Update() {
 	this.YAxisText = "Num"
 	this.ValueSuffix = ""
 
+	endtime := 1000 * uint(8*60*60+time.Now().Unix())
+	begintime := endtime - 1000*uint(len(playernum))
+
 	datas := make([]interface{}, 0)
 
 	json := simplejson.New()
 	json.Set("name", "player")
 	json.Set("data", playernum)
 	json.Set("pointInterval", 1000)
-	json.Set("pointStart", 1000*uint(8*60*60+time.Now().Unix()-int64(len(playernum))))
-	json.Set("pointEnd", 1000*uint(8*60*60+time.Now().Unix()))
+	json.Set("pointStart", begintime)
+	json.Set("pointEnd", endtime)
+	datas = append(datas, json)
+
+	json = simplejson.New()
+	json.Set("name", "room")
+	json.Set("data", roomnum)
+	json.Set("pointInterval", 1000)
+	json.Set("pointStart", begintime)
+	json.Set("pointEnd", endtime)
 	datas = append(datas, json)
 
 	json = simplejson.New()
