@@ -22,6 +22,7 @@ func (this *TimeChartExample) Update() {
 	this.Title = "x时间轴例子"
 	this.SubTitle = ""
 	this.YAxisText = "Num"
+	this.YMax = "100"
 	this.ValueSuffix = ""
 
 	endtime := 1000 * uint(8*60*60+time.Now().Unix())
