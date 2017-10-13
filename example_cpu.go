@@ -15,7 +15,7 @@ type ExampleCPU struct {
 }
 
 func NewExampleCPU() *ExampleCPU {
-	lenlimit := 12
+	lenlimit := 1800
 	cc, _ := cpu.Percent(0, false)
 	inst := &ExampleCPU{cpus: make(map[int][]int), lenlimit: lenlimit}
 	for i := 0; i < len(cc); i++ {

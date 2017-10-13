@@ -19,7 +19,7 @@ type ExampleNetwork struct {
 }
 
 func NewExampleNetwork() *ExampleNetwork {
-	lenlimit := 12
+	lenlimit := 1800
 	inst := &ExampleNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
 	inst.RefreshTime = "1"
 	inst.ChartType = "line"

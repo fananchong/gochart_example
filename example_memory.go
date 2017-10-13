@@ -16,7 +16,7 @@ type ExampleMemory struct {
 }
 
 func NewExampleMemory() *ExampleMemory {
-	lenlimit := 12
+	lenlimit := 1800
 	inst := &ExampleMemory{mem: make([]int, lenlimit), lenlimit: lenlimit}
 
 	m, _ := mem.VirtualMemory()
