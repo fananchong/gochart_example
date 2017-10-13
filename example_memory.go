@@ -4,6 +4,7 @@ import (
 	"github.com/bitly/go-simplejson"
 	"github.com/fananchong/gochart"
 	"github.com/shirou/gopsutil/mem"
+	"math"
 	"strconv"
 	"time"
 )
@@ -22,7 +23,7 @@ func NewExampleMemory() *ExampleMemory {
 	inst.RefreshTime = "1"
 	inst.ChartType = "line"
 	inst.Title = "内存占用"
-	inst.SubTitle = "内存大小: " + strconv.Itoa(int(m.Total/1024)) + "GB"
+	inst.SubTitle = "内存大小: " + strconv.Itoa(int(math.Ceil(float64(m.Total)/float64(1024*1024*1024)))) + "GB"
 	inst.YAxisText = "memory"
 	inst.YMax = "100"
 	inst.ValueSuffix = "%"
