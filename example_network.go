@@ -9,28 +9,23 @@ import (
 
 type ExampleNetwork struct {
 	gochart.ChartTime
-	send     map[string][]float64
-	recv     map[string][]float64
+	send     []uint64
+	recv     []uint64
+	presend  uint64
+	prerecv  uint64
 	lenlimit int
 }
 
 func NewExampleNetwork() *ExampleNetwork {
 	lenlimit := 12
-	nv, _ := net.IOCounters(true)
-	inst := &ExampleNetwork{send: make(map[string][]float64), recv: make(map[string][]float64), lenlimit: lenlimit}
-	for i := 0; i < len(nv); i++ {
-		inst.send[nv[i].Name] = make([]float64, lenlimit)
-		inst.recv[nv[i].Name] = make([]float64, lenlimit)
-	}
-
+	inst := &ExampleNetwork{send: make([]uint64, lenlimit), recv: make([]uint64, lenlimit), lenlimit: lenlimit}
 	inst.RefreshTime = "1"
 	inst.ChartType = "line"
 	inst.Title = "网络带宽"
 	inst.SubTitle = ""
 	inst.YAxisText = "net"
-	inst.YMax = "100"
-	inst.ValueSuffix = "M"
-
+	inst.YMax = "1000"
+	inst.ValueSuffix = "bytes"
 	return inst
 }
 
@@ -43,24 +38,22 @@ func (this *ExampleNetwork) Update() {
 	datas := make([]interface{}, 0)
 
 	var json *simplejson.Json
-	for k, v := range this.send {
-		json = simplejson.New()
-		json.Set("name", k+"(Sent)")
-		json.Set("data", v)
-		json.Set("pointInterval", 1000)
-		json.Set("pointStart", begintime)
-		json.Set("pointEnd", endtime)
-		datas = append(datas, json)
-	}
-	for k, v := range this.recv {
-		json = simplejson.New()
-		json.Set("name", k+"(Recv)")
-		json.Set("data", v)
-		json.Set("pointInterval", 1000)
-		json.Set("pointStart", begintime)
-		json.Set("pointEnd", endtime)
-		datas = append(datas, json)
-	}
+
+	json = simplejson.New()
+	json.Set("name", "Sent")
+	json.Set("data", this.send)
+	json.Set("pointInterval", 1000)
+	json.Set("pointStart", begintime)
+	json.Set("pointEnd", endtime)
+	datas = append(datas, json)
+
+	json = simplejson.New()
+	json.Set("name", "Recv")
+	json.Set("data", this.recv)
+	json.Set("pointInterval", 1000)
+	json.Set("pointStart", begintime)
+	json.Set("pointEnd", endtime)
+	datas = append(datas, json)
 
 	datas = append(datas, json)
 	json = simplejson.New()
@@ -70,13 +63,20 @@ func (this *ExampleNetwork) Update() {
 }
 
 func (this *ExampleNetwork) updateData() {
-	nv, _ := net.IOCounters(true)
-	for i := 0; i < len(nv); i++ {
-		this.send[nv[i].Name] = append(this.send[nv[i].Name], float64(nv[i].BytesSent)/(1024*1024))
-		this.send[nv[i].Name] = this.send[nv[i].Name][1:]
+	nv, _ := net.IOCounters(false)
+
+	if this.presend == 0 {
+		this.presend = nv[0].BytesSent
 	}
-	for i := 0; i < len(nv); i++ {
-		this.recv[nv[i].Name] = append(this.recv[nv[i].Name], float64(nv[i].BytesRecv)/(1024*1024))
-		this.recv[nv[i].Name] = this.recv[nv[i].Name][1:]
+	if this.prerecv == 0 {
+		this.prerecv = nv[0].BytesRecv
 	}
+
+	this.send = append(this.send, nv[0].BytesSent-this.presend)
+	this.send = this.send[1:]
+	this.recv = append(this.recv, nv[0].BytesRecv-this.prerecv)
+	this.recv = this.recv[1:]
+
+	this.presend = nv[0].BytesSent
+	this.prerecv = nv[0].BytesRecv
 }
