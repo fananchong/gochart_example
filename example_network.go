@@ -1,16 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"github.com/bitly/go-simplejson"
 	"github.com/fananchong/gochart"
 	"github.com/shirou/gopsutil/net"
+	"strconv"
 	"time"
 )
 
 type ExampleNetwork struct {
 	gochart.ChartTime
-	send     []uint64
-	recv     []uint64
+	send     []float64
+	recv     []float64
 	presend  uint64
 	prerecv  uint64
 	lenlimit int
@@ -18,14 +20,14 @@ type ExampleNetwork struct {
 
 func NewExampleNetwork() *ExampleNetwork {
 	lenlimit := 12
-	inst := &ExampleNetwork{send: make([]uint64, lenlimit), recv: make([]uint64, lenlimit), lenlimit: lenlimit}
+	inst := &ExampleNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
 	inst.RefreshTime = "1"
 	inst.ChartType = "line"
 	inst.Title = "网络带宽"
 	inst.SubTitle = ""
 	inst.YAxisText = "net"
-	inst.YMax = "1000"
-	inst.ValueSuffix = "bytes"
+	inst.YMax = "1024000"
+	inst.ValueSuffix = "K"
 	return inst
 }
 
@@ -55,7 +57,6 @@ func (this *ExampleNetwork) Update() {
 	json.Set("pointEnd", endtime)
 	datas = append(datas, json)
 
-	datas = append(datas, json)
 	json = simplejson.New()
 	json.Set("DataArray", datas)
 	b, _ := json.Get("DataArray").Encode()
@@ -72,9 +73,11 @@ func (this *ExampleNetwork) updateData() {
 		this.prerecv = nv[0].BytesRecv
 	}
 
-	this.send = append(this.send, nv[0].BytesSent-this.presend)
+	v1, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesSent-this.presend)/float64(1024)), 64)
+	this.send = append(this.send, v1)
 	this.send = this.send[1:]
-	this.recv = append(this.recv, nv[0].BytesRecv-this.prerecv)
+	v2, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesRecv-this.prerecv)/float64(1024)), 64)
+	this.recv = append(this.recv, v2)
 	this.recv = this.recv[1:]
 
 	this.presend = nv[0].BytesSent
