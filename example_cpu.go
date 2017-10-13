@@ -8,38 +8,36 @@ import (
 	"time"
 )
 
-var (
-	lenlimit uint = 12
-)
-
 type ExampleCPU struct {
 	gochart.ChartTime
-	cpus map[int][]int
+	cpus     map[int][]int
+	lenlimit int
 }
 
 func NewExampleCPU() *ExampleCPU {
+	lenlimit := 12
 	cc, _ := cpu.Percent(0, false)
-	inst := &ExampleCPU{cpus: make(map[int][]int)}
+	inst := &ExampleCPU{cpus: make(map[int][]int), lenlimit: lenlimit}
 	for i := 0; i < len(cc); i++ {
 		inst.cpus[i] = make([]int, lenlimit)
 	}
+
+	inst.RefreshTime = "1"
+	inst.ChartType = "line"
+	inst.Title = "CPU占用"
+	inst.SubTitle = ""
+	inst.YAxisText = "cpu"
+	inst.YMax = "100"
+	inst.ValueSuffix = "%"
+
 	return inst
 }
 
 func (this *ExampleCPU) Update() {
-	this.RefreshTime = "1"
-
-	this.ChartType = "line"
-	this.Title = "CPU占用"
-	this.SubTitle = ""
-	this.YAxisText = "cpu"
-	this.YMax = "100"
-	this.ValueSuffix = "%"
-
 	this.updateData()
 
-	endtime := 1000 * uint(8*60*60+time.Now().Unix())
-	begintime := endtime - 1000*lenlimit
+	endtime := 1000 * int(8*60*60+time.Now().Unix())
+	begintime := endtime - 1000*this.lenlimit
 
 	datas := make([]interface{}, 0)
 	var json *simplejson.Json

@@ -21,6 +21,7 @@ func main() {
 	s.AddChart("spline", &SplineChart{filename: "spline.chart"})
 	s.AddChart("time", &TimeChartExample{})
 	s.AddChart("cpu", NewExampleCPU())
+	s.AddChart("memory", NewExampleMemory())
 
 	println(s.ListenAndServe(":8000").Error())
 }
