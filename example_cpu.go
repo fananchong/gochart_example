@@ -14,14 +14,14 @@ var (
 
 type ExampleCPU struct {
 	gochart.ChartTime
-	cpus map[int][]float64
+	cpus map[int][]int
 }
 
 func NewExampleCPU() *ExampleCPU {
 	cc, _ := cpu.Percent(0, false)
-	inst := &ExampleCPU{cpus: make(map[int][]float64)}
+	inst := &ExampleCPU{cpus: make(map[int][]int)}
 	for i := 0; i < len(cc); i++ {
-		inst.cpus[i] = make([]float64, lenlimit)
+		inst.cpus[i] = make([]int, lenlimit)
 	}
 	return inst
 }
@@ -61,7 +61,7 @@ func (this *ExampleCPU) Update() {
 func (this *ExampleCPU) updateData() {
 	cc, _ := cpu.Percent(0, false)
 	for i := 0; i < len(cc); i++ {
-		this.cpus[i] = append(this.cpus[i], cc[i])
+		this.cpus[i] = append(this.cpus[i], int(cc[i]))
 		this.cpus[i] = this.cpus[i][1:]
 	}
 }
