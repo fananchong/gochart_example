@@ -21,13 +21,14 @@ type ExampleNetwork struct {
 func NewExampleNetwork() *ExampleNetwork {
 	lenlimit := DEFAULT_SAMPLE_NUM
 	inst := &ExampleNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
-	inst.RefreshTime = "1"
+	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
 	inst.ChartType = "line"
 	inst.Title = "网络带宽"
 	inst.SubTitle = ""
 	inst.YAxisText = "net"
 	inst.YMax = "1024000"
 	inst.ValueSuffix = "K"
+	inst.TickInterval = strconv.Itoa(DEFAULT_REFRESH_TIME * 1000)
 	return inst
 }
 
@@ -35,7 +36,7 @@ func (this *ExampleNetwork) Update() {
 	this.updateData()
 
 	endtime := 1000 * int(8*60*60+time.Now().Unix())
-	begintime := endtime - 1000*this.lenlimit
+	begintime := endtime - 1000*this.lenlimit*DEFAULT_REFRESH_TIME
 
 	datas := make([]interface{}, 0)
 
@@ -44,7 +45,6 @@ func (this *ExampleNetwork) Update() {
 	json = simplejson.New()
 	json.Set("name", "Sent")
 	json.Set("data", this.send)
-	json.Set("pointInterval", 1000)
 	json.Set("pointStart", begintime)
 	json.Set("pointEnd", endtime)
 	datas = append(datas, json)
@@ -52,7 +52,6 @@ func (this *ExampleNetwork) Update() {
 	json = simplejson.New()
 	json.Set("name", "Recv")
 	json.Set("data", this.recv)
-	json.Set("pointInterval", 1000)
 	json.Set("pointStart", begintime)
 	json.Set("pointEnd", endtime)
 	datas = append(datas, json)

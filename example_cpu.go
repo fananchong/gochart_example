@@ -22,13 +22,14 @@ func NewExampleCPU() *ExampleCPU {
 		inst.cpus[i] = make([]int, lenlimit)
 	}
 
-	inst.RefreshTime = "1"
+	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
 	inst.ChartType = "line"
 	inst.Title = "CPU占用"
 	inst.SubTitle = ""
 	inst.YAxisText = "cpu"
 	inst.YMax = "100"
 	inst.ValueSuffix = "%"
+	inst.TickInterval = strconv.Itoa(DEFAULT_REFRESH_TIME * 1000)
 
 	return inst
 }
@@ -37,7 +38,7 @@ func (this *ExampleCPU) Update() {
 	this.updateData()
 
 	endtime := 1000 * int(8*60*60+time.Now().Unix())
-	begintime := endtime - 1000*this.lenlimit
+	begintime := endtime - 1000*this.lenlimit*DEFAULT_REFRESH_TIME
 
 	datas := make([]interface{}, 0)
 	var json *simplejson.Json
@@ -45,7 +46,6 @@ func (this *ExampleCPU) Update() {
 		json = simplejson.New()
 		json.Set("name", "cpu"+strconv.Itoa(i))
 		json.Set("data", this.cpus[i])
-		json.Set("pointInterval", 1000)
 		json.Set("pointStart", begintime)
 		json.Set("pointEnd", endtime)
 		datas = append(datas, json)
