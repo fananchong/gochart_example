@@ -9,6 +9,11 @@ import (
 const start = `version: 1.0
 http://localhost:8000`
 
+const (
+	DEFAULT_REFRESH_TIME = 5
+	DEFAULT_SAMPLE_NUM   = 3600 / 5
+)
+
 func main() {
 	flag.Parse()
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Ltime)

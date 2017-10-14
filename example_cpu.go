@@ -15,7 +15,7 @@ type ExampleCPU struct {
 }
 
 func NewExampleCPU() *ExampleCPU {
-	lenlimit := 1800
+	lenlimit := DEFAULT_SAMPLE_NUM
 	cc, _ := cpu.Percent(0, false)
 	inst := &ExampleCPU{cpus: make(map[int][]int), lenlimit: lenlimit}
 	for i := 0; i < len(cc); i++ {
@@ -60,6 +60,8 @@ func (this *ExampleCPU) updateData() {
 	cc, _ := cpu.Percent(0, false)
 	for i := 0; i < len(cc); i++ {
 		this.cpus[i] = append(this.cpus[i], int(cc[i]))
-		this.cpus[i] = this.cpus[i][1:]
+		if len(this.cpus[i]) > DEFAULT_SAMPLE_NUM {
+			this.cpus[i] = this.cpus[i][1:]
+		}
 	}
 }

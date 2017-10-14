@@ -16,7 +16,7 @@ type ExampleMemory struct {
 }
 
 func NewExampleMemory() *ExampleMemory {
-	lenlimit := 1800
+	lenlimit := DEFAULT_SAMPLE_NUM
 	inst := &ExampleMemory{mem: make([]int, lenlimit), lenlimit: lenlimit}
 
 	m, _ := mem.VirtualMemory()
@@ -57,5 +57,7 @@ func (this *ExampleMemory) Update() {
 func (this *ExampleMemory) updateData() {
 	m, _ := mem.VirtualMemory()
 	this.mem = append(this.mem, int(m.UsedPercent))
-	this.mem = this.mem[1:]
+	if len(this.mem) > DEFAULT_SAMPLE_NUM {
+		this.mem = this.mem[1:]
+	}
 }

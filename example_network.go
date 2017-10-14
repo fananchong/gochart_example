@@ -19,7 +19,7 @@ type ExampleNetwork struct {
 }
 
 func NewExampleNetwork() *ExampleNetwork {
-	lenlimit := 1800
+	lenlimit := DEFAULT_SAMPLE_NUM
 	inst := &ExampleNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
 	inst.RefreshTime = "1"
 	inst.ChartType = "line"
@@ -75,10 +75,14 @@ func (this *ExampleNetwork) updateData() {
 
 	v1, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesSent-this.presend)/float64(1024)), 64)
 	this.send = append(this.send, v1)
-	this.send = this.send[1:]
+	for len(this.send) > DEFAULT_SAMPLE_NUM {
+		this.send = this.send[1:]
+	}
 	v2, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesRecv-this.prerecv)/float64(1024)), 64)
 	this.recv = append(this.recv, v2)
-	this.recv = this.recv[1:]
+	if len(this.recv) > DEFAULT_SAMPLE_NUM {
+		this.recv = this.recv[1:]
+	}
 
 	this.presend = nv[0].BytesSent
 	this.prerecv = nv[0].BytesRecv
