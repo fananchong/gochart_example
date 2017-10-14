@@ -1,23 +1,19 @@
 package main
 
 import (
-	"github.com/bitly/go-simplejson"
 	"github.com/fananchong/gochart"
 	"github.com/shirou/gopsutil/mem"
 	"math"
 	"strconv"
-	"time"
 )
 
 type ChartMemory struct {
 	gochart.ChartTime
-	mem      []int
-	lenlimit int
+	mem []int
 }
 
 func NewChartMemory() *ChartMemory {
-	lenlimit := DEFAULT_SAMPLE_NUM
-	inst := &ChartMemory{mem: make([]int, lenlimit), lenlimit: lenlimit}
+	inst := &ChartMemory{mem: make([]int, DEFAULT_SAMPLE_NUM)}
 
 	m, _ := mem.VirtualMemory()
 	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
@@ -27,31 +23,16 @@ func NewChartMemory() *ChartMemory {
 	inst.YAxisText = "memory"
 	inst.YMax = "100"
 	inst.ValueSuffix = "%"
-	inst.TickInterval = strconv.Itoa(DEFAULT_REFRESH_TIME * 1000)
 
 	return inst
 }
 
-func (this *ChartMemory) Update() {
+func (this *ChartMemory) Update(now int64) []interface{} {
 	this.updateData()
-
-	endtime := 1000 * int(8*60*60+time.Now().Unix())
-	begintime := endtime - 1000*this.lenlimit*DEFAULT_REFRESH_TIME
-
 	datas := make([]interface{}, 0)
-
-	var json *simplejson.Json
-	json = simplejson.New()
-	json.Set("name", "memory")
-	json.Set("data", this.mem)
-	json.Set("pointStart", begintime)
-	json.Set("pointEnd", endtime)
-
+	json := this.AddData("memory", this.mem, now, DEFAULT_SAMPLE_NUM, DEFAULT_REFRESH_TIME)
 	datas = append(datas, json)
-	json = simplejson.New()
-	json.Set("DataArray", datas)
-	b, _ := json.Get("DataArray").Encode()
-	this.DataArray = string(b)
+	return datas
 }
 
 func (this *ChartMemory) updateData() {

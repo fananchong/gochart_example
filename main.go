@@ -11,7 +11,7 @@ http://localhost:8000`
 
 const (
 	DEFAULT_REFRESH_TIME = 5
-	DEFAULT_SAMPLE_NUM   = 3600 / 5
+	DEFAULT_SAMPLE_NUM   = int(3600 / DEFAULT_REFRESH_TIME)
 )
 
 func main() {
@@ -20,13 +20,6 @@ func main() {
 	println(start)
 
 	s := &gochart.ChartServer{}
-	s.AddChart("area", &SplineChart{filename: "area.chart"})
-	s.AddChart("bar", &SplineChart{filename: "bar.chart"})
-	s.AddChart("column", &SplineChart{filename: "column.chart"})
-	s.AddChart("line", &SplineChart{filename: "line.chart"})
-	s.AddChart("pie", &PieChart{filename: "pie.chart"})
-	s.AddChart("spline", &SplineChart{filename: "spline.chart"})
-	s.AddChart("time", &TimeChartExample{})
 	s.AddChart("cpu", NewChartCPU())
 	s.AddChart("mem", NewChartMemory())
 	s.AddChart("net", NewChartNetwork())

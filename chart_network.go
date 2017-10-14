@@ -2,25 +2,21 @@ package main
 
 import (
 	"fmt"
-	"github.com/bitly/go-simplejson"
 	"github.com/fananchong/gochart"
 	"github.com/shirou/gopsutil/net"
 	"strconv"
-	"time"
 )
 
 type ChartNetwork struct {
 	gochart.ChartTime
-	send     []float64
-	recv     []float64
-	presend  uint64
-	prerecv  uint64
-	lenlimit int
+	send    []float64
+	recv    []float64
+	presend uint64
+	prerecv uint64
 }
 
 func NewChartNetwork() *ChartNetwork {
-	lenlimit := DEFAULT_SAMPLE_NUM
-	inst := &ChartNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
+	inst := &ChartNetwork{send: make([]float64, DEFAULT_SAMPLE_NUM), recv: make([]float64, DEFAULT_SAMPLE_NUM)}
 	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
 	inst.ChartType = "line"
 	inst.Title = "网络带宽"
@@ -28,38 +24,17 @@ func NewChartNetwork() *ChartNetwork {
 	inst.YAxisText = "net"
 	inst.YMax = "1024000"
 	inst.ValueSuffix = "K"
-	inst.TickInterval = strconv.Itoa(DEFAULT_REFRESH_TIME * 1000)
 	return inst
 }
 
-func (this *ChartNetwork) Update() {
+func (this *ChartNetwork) Update(now int64) []interface{} {
 	this.updateData()
-
-	endtime := 1000 * int(8*60*60+time.Now().Unix())
-	begintime := endtime - 1000*this.lenlimit*DEFAULT_REFRESH_TIME
-
 	datas := make([]interface{}, 0)
-
-	var json *simplejson.Json
-
-	json = simplejson.New()
-	json.Set("name", "Sent")
-	json.Set("data", this.send)
-	json.Set("pointStart", begintime)
-	json.Set("pointEnd", endtime)
-	datas = append(datas, json)
-
-	json = simplejson.New()
-	json.Set("name", "Recv")
-	json.Set("data", this.recv)
-	json.Set("pointStart", begintime)
-	json.Set("pointEnd", endtime)
-	datas = append(datas, json)
-
-	json = simplejson.New()
-	json.Set("DataArray", datas)
-	b, _ := json.Get("DataArray").Encode()
-	this.DataArray = string(b)
+	json1 := this.AddData("Sent", this.send, now, DEFAULT_SAMPLE_NUM, DEFAULT_REFRESH_TIME)
+	datas = append(datas, json1)
+	json2 := this.AddData("Recv", this.recv, now, DEFAULT_SAMPLE_NUM, DEFAULT_REFRESH_TIME)
+	datas = append(datas, json2)
+	return datas
 }
 
 func (this *ChartNetwork) updateData() {
