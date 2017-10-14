@@ -27,9 +27,9 @@ func main() {
 	s.AddChart("pie", &PieChart{filename: "pie.chart"})
 	s.AddChart("spline", &SplineChart{filename: "spline.chart"})
 	s.AddChart("time", &TimeChartExample{})
-	s.AddChart("cpu", NewExampleCPU())
-	s.AddChart("memory", NewExampleMemory())
-	s.AddChart("net", NewExampleNetwork())
+	s.AddChart("cpu", NewChartCPU())
+	s.AddChart("mem", NewChartMemory())
+	s.AddChart("net", NewChartNetwork())
 
 	println(s.ListenAndServe(":8000").Error())
 }

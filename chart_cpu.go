@@ -8,16 +8,16 @@ import (
 	"time"
 )
 
-type ExampleCPU struct {
+type ChartCPU struct {
 	gochart.ChartTime
 	cpus     map[int][]int
 	lenlimit int
 }
 
-func NewExampleCPU() *ExampleCPU {
+func NewChartCPU() *ChartCPU {
 	lenlimit := DEFAULT_SAMPLE_NUM
 	cc, _ := cpu.Percent(0, false)
-	inst := &ExampleCPU{cpus: make(map[int][]int), lenlimit: lenlimit}
+	inst := &ChartCPU{cpus: make(map[int][]int), lenlimit: lenlimit}
 	for i := 0; i < len(cc); i++ {
 		inst.cpus[i] = make([]int, lenlimit)
 	}
@@ -34,7 +34,7 @@ func NewExampleCPU() *ExampleCPU {
 	return inst
 }
 
-func (this *ExampleCPU) Update() {
+func (this *ChartCPU) Update() {
 	this.updateData()
 
 	endtime := 1000 * int(8*60*60+time.Now().Unix())
@@ -56,7 +56,7 @@ func (this *ExampleCPU) Update() {
 	this.DataArray = string(b)
 }
 
-func (this *ExampleCPU) updateData() {
+func (this *ChartCPU) updateData() {
 	cc, _ := cpu.Percent(0, false)
 	for i := 0; i < len(cc); i++ {
 		this.cpus[i] = append(this.cpus[i], int(cc[i]))

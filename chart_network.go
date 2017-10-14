@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type ExampleNetwork struct {
+type ChartNetwork struct {
 	gochart.ChartTime
 	send     []float64
 	recv     []float64
@@ -18,9 +18,9 @@ type ExampleNetwork struct {
 	lenlimit int
 }
 
-func NewExampleNetwork() *ExampleNetwork {
+func NewChartNetwork() *ChartNetwork {
 	lenlimit := DEFAULT_SAMPLE_NUM
-	inst := &ExampleNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
+	inst := &ChartNetwork{send: make([]float64, lenlimit), recv: make([]float64, lenlimit), lenlimit: lenlimit}
 	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
 	inst.ChartType = "line"
 	inst.Title = "网络带宽"
@@ -32,7 +32,7 @@ func NewExampleNetwork() *ExampleNetwork {
 	return inst
 }
 
-func (this *ExampleNetwork) Update() {
+func (this *ChartNetwork) Update() {
 	this.updateData()
 
 	endtime := 1000 * int(8*60*60+time.Now().Unix())
@@ -62,7 +62,7 @@ func (this *ExampleNetwork) Update() {
 	this.DataArray = string(b)
 }
 
-func (this *ExampleNetwork) updateData() {
+func (this *ChartNetwork) updateData() {
 	nv, _ := net.IOCounters(false)
 
 	if this.presend == 0 {

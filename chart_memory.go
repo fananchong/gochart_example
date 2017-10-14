@@ -9,15 +9,15 @@ import (
 	"time"
 )
 
-type ExampleMemory struct {
+type ChartMemory struct {
 	gochart.ChartTime
 	mem      []int
 	lenlimit int
 }
 
-func NewExampleMemory() *ExampleMemory {
+func NewChartMemory() *ChartMemory {
 	lenlimit := DEFAULT_SAMPLE_NUM
-	inst := &ExampleMemory{mem: make([]int, lenlimit), lenlimit: lenlimit}
+	inst := &ChartMemory{mem: make([]int, lenlimit), lenlimit: lenlimit}
 
 	m, _ := mem.VirtualMemory()
 	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
@@ -32,7 +32,7 @@ func NewExampleMemory() *ExampleMemory {
 	return inst
 }
 
-func (this *ExampleMemory) Update() {
+func (this *ChartMemory) Update() {
 	this.updateData()
 
 	endtime := 1000 * int(8*60*60+time.Now().Unix())
@@ -54,7 +54,7 @@ func (this *ExampleMemory) Update() {
 	this.DataArray = string(b)
 }
 
-func (this *ExampleMemory) updateData() {
+func (this *ChartMemory) updateData() {
 	m, _ := mem.VirtualMemory()
 	this.mem = append(this.mem, int(m.UsedPercent))
 	if len(this.mem) > DEFAULT_SAMPLE_NUM {
