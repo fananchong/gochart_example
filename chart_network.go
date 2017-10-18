@@ -22,8 +22,8 @@ func NewChartNetwork() *ChartNetwork {
 	inst.Title = "网络带宽"
 	inst.SubTitle = ""
 	inst.YAxisText = "net"
-	inst.YMax = "1024000"
-	inst.ValueSuffix = "K"
+	inst.YMax = "1000"
+	inst.ValueSuffix = "Mbps"
 	return inst
 }
 
@@ -47,12 +47,12 @@ func (this *ChartNetwork) updateData() {
 		this.prerecv = nv[0].BytesRecv
 	}
 
-	v1, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesSent-this.presend)/float64(1024)), 64)
+	v1, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesSent-this.presend)*8/float64(1024*1024)), 64)
 	this.send = append(this.send, v1)
 	for len(this.send) > DEFAULT_SAMPLE_NUM {
 		this.send = this.send[1:]
 	}
-	v2, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesRecv-this.prerecv)/float64(1024)), 64)
+	v2, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesRecv-this.prerecv)*8/float64(1024*1024)), 64)
 	this.recv = append(this.recv, v2)
 	if len(this.recv) > DEFAULT_SAMPLE_NUM {
 		this.recv = this.recv[1:]
