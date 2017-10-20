@@ -20,9 +20,9 @@ func main() {
 	println(start)
 
 	s := &gochart.ChartServer{}
-	s.AddChart("cpu", NewChartCPU(), true)
-	s.AddChart("mem", NewChartMemory(), true)
-	s.AddChart("net", NewChartNetwork(), true)
+	s.AddChart("cpu", NewChartCPU(), false)
+	s.AddChart("mem", NewChartMemory(), false)
+	s.AddChart("net", NewChartNetwork(), false)
 
 	println(s.ListenAndServe(":8000").Error())
 }

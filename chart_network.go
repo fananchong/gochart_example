@@ -9,55 +9,37 @@ import (
 
 type ChartNetwork struct {
 	gochart.ChartTime
-	send    []float64
-	recv    []float64
 	presend uint64
 	prerecv uint64
 }
 
 func NewChartNetwork() *ChartNetwork {
-	inst := &ChartNetwork{send: make([]float64, DEFAULT_SAMPLE_NUM), recv: make([]float64, DEFAULT_SAMPLE_NUM)}
-	inst.RefreshTime = strconv.Itoa(DEFAULT_REFRESH_TIME)
-	inst.ChartType = "line"
-	inst.Title = "网络带宽"
-	inst.SubTitle = ""
-	inst.YAxisText = "net"
-	inst.YMax = "1000"
-	inst.ValueSuffix = "Mbps"
-	return inst
+	this := &ChartNetwork{}
+	this.RefreshTime = DEFAULT_REFRESH_TIME
+	this.SampleNum = DEFAULT_SAMPLE_NUM
+	this.ChartType = "line"
+	this.Title = "网络带宽"
+	this.SubTitle = ""
+	this.YAxisText = "net"
+	this.YMax = "1000"
+	this.ValueSuffix = "Mbps"
+	return this
 }
 
-func (this *ChartNetwork) Update(now int64) []interface{} {
-	this.updateData()
-	datas := make([]interface{}, 0)
-	json1 := this.AddData("Sent", this.send, now, DEFAULT_SAMPLE_NUM, DEFAULT_REFRESH_TIME)
-	datas = append(datas, json1)
-	json2 := this.AddData("Recv", this.recv, now, DEFAULT_SAMPLE_NUM, DEFAULT_REFRESH_TIME)
-	datas = append(datas, json2)
-	return datas
-}
-
-func (this *ChartNetwork) updateData() {
+func (this *ChartNetwork) Update(now int64) map[string][]interface{} {
+	datas := make(map[string][]interface{})
 	nv, _ := net.IOCounters(false)
-
 	if this.presend == 0 {
 		this.presend = nv[0].BytesSent
 	}
 	if this.prerecv == 0 {
 		this.prerecv = nv[0].BytesRecv
 	}
-
 	v1, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesSent-this.presend)*8/float64(1024*1024)), 64)
-	this.send = append(this.send, v1)
-	for len(this.send) > DEFAULT_SAMPLE_NUM {
-		this.send = this.send[1:]
-	}
+	datas["Sent"] = []interface{}{v1}
 	v2, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", float64(nv[0].BytesRecv-this.prerecv)*8/float64(1024*1024)), 64)
-	this.recv = append(this.recv, v2)
-	if len(this.recv) > DEFAULT_SAMPLE_NUM {
-		this.recv = this.recv[1:]
-	}
-
+	datas["Recv"] = []interface{}{v2}
 	this.presend = nv[0].BytesSent
 	this.prerecv = nv[0].BytesRecv
+	return datas
 }
