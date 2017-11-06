@@ -1,0 +1,62 @@
+{
+	"ImportPath": "github.com/fananchong/gochart_example",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/StackExchange/wmi",
+			"Rev": "ea383cf3ba6ec950874b8486cd72356d007c768f"
+		},
+		{
+			"ImportPath": "github.com/bitly/go-simplejson",
+			"Comment": "v0.5.0-8-g0c96595",
+			"Rev": "0c965951289cce37dec52ad1f34200fefc816777"
+		},
+		{
+			"ImportPath": "github.com/fananchong/gochart",
+			"Comment": "v2.0-16-g36d9f6a",
+			"Rev": "36d9f6aba0a01040d5863d111162a5160d05f376"
+		},
+		{
+			"ImportPath": "github.com/go-ole/go-ole",
+			"Comment": "v0.0.1",
+			"Rev": "2ecd927eaf828c4fc088fae349b28eed1480ff56"
+		},
+		{
+			"ImportPath": "github.com/go-ole/go-ole/oleutil",
+			"Comment": "v0.0.1",
+			"Rev": "2ecd927eaf828c4fc088fae349b28eed1480ff56"
+		},
+		{
+			"ImportPath": "github.com/shirou/gopsutil/cpu",
+			"Comment": "v2.17.10",
+			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+		},
+		{
+			"ImportPath": "github.com/shirou/gopsutil/internal/common",
+			"Comment": "v2.17.10",
+			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+		},
+		{
+			"ImportPath": "github.com/shirou/gopsutil/mem",
+			"Comment": "v2.17.10",
+			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+		},
+		{
+			"ImportPath": "github.com/shirou/gopsutil/net",
+			"Comment": "v2.17.10",
+			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "8eb05f94d449fdf134ec24630ce69ada5b469c1c"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/windows",
+			"Rev": "8eb05f94d449fdf134ec24630ce69ada5b469c1c"
+		}
+	]
+}
