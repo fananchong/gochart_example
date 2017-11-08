@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+
 	"github.com/fananchong/gochart"
 )
 
@@ -16,14 +17,14 @@ const (
 func main() {
 	flag.Parse()
 
-	gochart.SetLogger(glog)
+	gochart.SetLogger(xlog)
 
-	glog.Infoln(start)
+	xlog.Infoln(start)
 
 	s := &gochart.ChartServer{}
 	s.AddChart("cpu", NewChartCPU(), true)
 	s.AddChart("mem", NewChartMemory(), true)
 	s.AddChart("net", NewChartNetwork(), true)
 
-	glog.Infoln(s.ListenAndServe(":8000").Error())
+	xlog.Infoln(s.ListenAndServe(":8000").Error())
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/fananchong/gochart"
 )
 
@@ -61,5 +62,5 @@ func (this *DefaultLogger) Fatalln(args ...interface{}) {
 }
 
 var (
-	glog gochart.ILogger = NewDefaultLogger()
+	xlog gochart.ILogger = NewDefaultLogger()
 )

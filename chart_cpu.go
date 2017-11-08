@@ -1,9 +1,10 @@
 package main
 
 import (
+	"strconv"
+
 	"github.com/fananchong/gochart"
 	"github.com/shirou/gopsutil/cpu"
-	"strconv"
 )
 
 type ChartCPU struct {

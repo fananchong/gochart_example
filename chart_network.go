@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/fananchong/gochart"
 	"github.com/shirou/gopsutil/net"
-	"strconv"
 )
 
 type ChartNetwork struct {
@@ -24,6 +25,7 @@ func NewChartNetwork() *ChartNetwork {
 	this.YMax = "1000"
 	this.ValueSuffix = "Mbps"
 	return this
+
 }
 
 func (this *ChartNetwork) Update(now int64) map[string][]interface{} {

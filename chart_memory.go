@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/fananchong/gochart"
-	"github.com/shirou/gopsutil/mem"
 	"math"
 	"strconv"
+
+	"github.com/fananchong/gochart"
+	"github.com/shirou/gopsutil/mem"
 )
 
 type ChartMemory struct {
@@ -23,6 +24,7 @@ func NewChartMemory() *ChartMemory {
 	this.YMax = "100"
 	this.ValueSuffix = "%"
 	return this
+
 }
 
 func (this *ChartMemory) Update(now int64) map[string][]interface{} {
