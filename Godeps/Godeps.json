@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/fananchong/gochart_example",
-	"GoVersion": "go1.8",
+	"GoVersion": "go1.9",
 	"GodepVersion": "v79",
 	"Packages": [
 		"./..."
@@ -17,46 +17,46 @@
 		},
 		{
 			"ImportPath": "github.com/fananchong/gochart",
-			"Comment": "v2.0-16-g36d9f6a",
-			"Rev": "74caf9bf2257f54ed527b53561afea46eea6a3ab"
+			"Comment": "v2.0-18-gedaa570",
+			"Rev": "edaa5701c7497e53b82e477ddaa681ebe9e428d2"
 		},
 		{
 			"ImportPath": "github.com/go-ole/go-ole",
-			"Comment": "v0.0.1",
-			"Rev": "2ecd927eaf828c4fc088fae349b28eed1480ff56"
+			"Comment": "v0.0.1-1-ga41e3c4",
+			"Rev": "a41e3c4b706f6ae8dfbff342b06e40fa4d2d0506"
 		},
 		{
 			"ImportPath": "github.com/go-ole/go-ole/oleutil",
-			"Comment": "v0.0.1",
-			"Rev": "2ecd927eaf828c4fc088fae349b28eed1480ff56"
+			"Comment": "v0.0.1-1-ga41e3c4",
+			"Rev": "a41e3c4b706f6ae8dfbff342b06e40fa4d2d0506"
 		},
 		{
 			"ImportPath": "github.com/shirou/gopsutil/cpu",
-			"Comment": "v2.17.10",
-			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+			"Comment": "v2.17.12",
+			"Rev": "7ec06ec280df1dd1f08befc535049d49d63ae18a"
 		},
 		{
 			"ImportPath": "github.com/shirou/gopsutil/internal/common",
-			"Comment": "v2.17.10",
-			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+			"Comment": "v2.17.12",
+			"Rev": "7ec06ec280df1dd1f08befc535049d49d63ae18a"
 		},
 		{
 			"ImportPath": "github.com/shirou/gopsutil/mem",
-			"Comment": "v2.17.10",
-			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+			"Comment": "v2.17.12",
+			"Rev": "7ec06ec280df1dd1f08befc535049d49d63ae18a"
 		},
 		{
 			"ImportPath": "github.com/shirou/gopsutil/net",
-			"Comment": "v2.17.10",
-			"Rev": "48fc5612898a1213aa5d6a0fb2d4f7b968e898fb"
+			"Comment": "v2.17.12",
+			"Rev": "7ec06ec280df1dd1f08befc535049d49d63ae18a"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
-			"Rev": "8eb05f94d449fdf134ec24630ce69ada5b469c1c"
+			"Rev": "dd9ec17814d5b1de388ebe438ec013d57d8b3779"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/windows",
-			"Rev": "8eb05f94d449fdf134ec24630ce69ada5b469c1c"
+			"Rev": "dd9ec17814d5b1de388ebe438ec013d57d8b3779"
 		}
 	]
 }
