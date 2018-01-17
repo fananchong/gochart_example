@@ -17,8 +17,8 @@
 		},
 		{
 			"ImportPath": "github.com/fananchong/gochart",
-			"Comment": "v2.0-18-gedaa570",
-			"Rev": "edaa5701c7497e53b82e477ddaa681ebe9e428d2"
+			"Comment": "v2.0-19-g44355d2",
+			"Rev": "44355d23310ea539af7044790e4fdc81f03e44cc"
 		},
 		{
 			"ImportPath": "github.com/go-ole/go-ole",
